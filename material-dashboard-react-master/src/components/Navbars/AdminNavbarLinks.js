@@ -18,13 +18,14 @@ import Search from "@material-ui/icons/Search";
 // core components
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
-
+import Cookies from "universal-cookie";
 import styles from "assets/jss/material-dashboard-react/components/headerLinksStyle.js";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
+import axios from "axios";
 
 const useStyles = makeStyles(styles);
 
-export default function AdminNavbarLinks({currentUser}) {
+function AdminNavbarLinks({ currentUser, history }) {
   const classes = useStyles();
   const [openNotification, setOpenNotification] = React.useState(null);
   const [openProfile, setOpenProfile] = React.useState(null);
@@ -47,6 +48,24 @@ export default function AdminNavbarLinks({currentUser}) {
   };
   const handleCloseProfile = () => {
     setOpenProfile(null);
+  };
+
+  const cookies = new Cookies();
+  const token = cookies.get("matanHomeWork");
+  console.log(token);
+  const handleLogOutProfile = async () => {
+    try {
+      await axios.post("http://localhost:8000/api/users/logout", {
+        headers: {
+          Authorization: "Bearer " + token,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      cookies.remove("matanHomeWork");
+      history.push("/admin/signin");
+    } catch (e) {
+      console.log(e);
+    }
   };
   return (
     <div>
@@ -156,7 +175,7 @@ export default function AdminNavbarLinks({currentUser}) {
           )}
         </Poppers>
       </div>
-      {currentUser ?
+      {token ? (
         <div className={classes.manager}>
           <Button
             color={window.innerWidth > 959 ? "transparent" : "white"}
@@ -209,7 +228,7 @@ export default function AdminNavbarLinks({currentUser}) {
                       </MenuItem>
                       <Divider light />
                       <MenuItem
-                        onClick={handleCloseProfile}
+                        onClick={handleLogOutProfile}
                         className={classes.dropdownItem}
                       >
                         Logout
@@ -221,8 +240,13 @@ export default function AdminNavbarLinks({currentUser}) {
             )}
           </Poppers>
         </div>
-      :
-      <Link className="option" to='/user/signin'>SIGN IN</Link>}
+      ) : (
+        <Link className="option" to="/user/signin">
+          SIGN IN
+        </Link>
+      )}
     </div>
   );
 }
+
+export default withRouter(AdminNavbarLinks);

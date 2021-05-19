@@ -23,7 +23,8 @@
     "react-scripts": "3.1.0",
     "react-swipeable-views": "0.13.3",
     "redux": "^4.1.0",
-    "redux-logger": "^3.0.6"
+    "redux-logger": "^3.0.6",
+    "universal-cookie": "^4.0.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -67,5 +68,6 @@
       "not op_mini all"
     ],
     "development": []
-  }
+  },
+  "proxy": "http://localhost:8000"
 }

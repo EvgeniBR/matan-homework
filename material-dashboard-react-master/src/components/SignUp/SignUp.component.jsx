@@ -1,44 +1,77 @@
-import React,{useState} from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import CustomButton from "../CustomButton/CustomButton.component";
 import FormInput from "../FormInput/FormInput.component";
+import Cookies from 'universal-cookie';
+import { withRouter } from "react-router";
 
-const SignUp = () => {
+
+const SignUp = ({history}) => {
   const [currentState, setCurrentState] = useState({
-    displayName:'',
-    email:'',
-    password:'',
-    confirmPassword:'',
+    usernName: "",
+    firstName: "",
+    LastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
 
-  const handleSubmit = async(event) =>{
+  const cookies = new Cookies();
+  const coociesAccess = {
+    path : '/',
+    sameSite: 'strict',
+};
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const { displayName, email, password, confirmPassword } = currentState;
-
-    if(password !== confirmPassword){
-        alert('passwords don\'t match');
-        return;
+    const {
+      usernName,
+      firstName,
+      LastName,
+      email,
+      password,
+      confirmPassword,
+    } = currentState;
+    console.log(JSON.stringify(currentState));
+    if (password !== confirmPassword) {
+      alert("passwords don't match");
+      return;
     }
-    try{
+    try {
+      const user = await axios
+        .post("http://localhost:8000/api/users", currentState)
+        .then((res) => cookies.set('matanHomeWork', res.data.token , coociesAccess))
         
-        setCurrentState({
-            displayName:'',
-            email:'',
-            password:'',
-            confirmPassword:'',  
-        })
-    }catch(e){
-        console.log('error in handle submit of sign up' ,e);
+      setCurrentState({
+        usernName: "",
+        firstName: "",
+        LastName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
+
+      history.push('/admin/dashboard');
+    } catch (e) {
+      console.log("error in handle submit of sign up", e);
     }
-  }
+  };
 
-  const handleChange = (event) =>{
-    const {name, value} = event.target
+  const handleChange = (event) => {
+    const { name, value } = event.target;
     setCurrentState((oldState) => {
-        return {...oldState, [name]:value };
+      return { ...oldState, [name]: value };
     });
-  }
+  };
 
-  const { displayName, email, password, confirmPassword } = currentState;
+  const {
+    usernName,
+    firstName,
+    LastName,
+    email,
+    password,
+    confirmPassword,
+  } = currentState;
 
   return (
     <div className="sign-up">
@@ -47,10 +80,26 @@ const SignUp = () => {
       <form className="sign-up-form" onSubmit={(event) => handleSubmit(event)}>
         <FormInput
           type="text"
-          name="displayName"
-          value={displayName}
+          name="usernName"
+          value={usernName}
           onChange={(event) => handleChange(event)}
-          label="Display Name"
+          label="User Name"
+          required
+        />
+        <FormInput
+          type="text"
+          name="firstName"
+          value={firstName}
+          onChange={(event) => handleChange(event)}
+          label="First Name"
+          required
+        />
+        <FormInput
+          type="text"
+          name="LastName"
+          value={LastName}
+          onChange={(event) => handleChange(event)}
+          label="Last Name"
           required
         />
         <FormInput
@@ -77,10 +126,10 @@ const SignUp = () => {
           label="Confirm Password"
           required
         />
-        <CustomButton type='submit'>SIGN UP</CustomButton>
+        <CustomButton type="submit">SIGN UP</CustomButton>
       </form>
     </div>
   );
 };
 
-export default SignUp;
+export default withRouter(SignUp);

@@ -1,37 +1,50 @@
 import React, { useState } from "react";
 import CustomButton from "../CustomButton/CustomButton.component";
 import FormInput from "../FormInput/FormInput.component";
-
+import Cookies from "universal-cookie";
+import { withRouter } from "react-router";
+import axios from "axios";
 
 import "./SignIn.styles.scss";
 
-const SignIn = () => {
+const SignIn = ({ history }) => {
   const [inputFields, setInputFields] = useState({ email: "", password: "" });
+
+  const cookies = new Cookies();
+  const coociesAccess = {
+    path: "/",
+    sameSite: "strict",
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const {email, password} = inputFields
-    try{
-      console.log(inputFields)
+    const { email, password } = inputFields;
+    try {
+      const user = await axios
+        .post("http://localhost:8000/api/users/login", inputFields)
+        .then((res) =>
+          cookies.set("matanHomeWork", res.data.token, coociesAccess)
+        );
       setInputFields({ email: "", password: "" });
-    }catch(e){
+      history.push('/admin/dashboard');
+    } catch (e) {
       console.log(e);
-    } 
+    }
   };
 
   const handleChange = async (event) => {
-     const name  = event.target.name;
-     const value = event.target.value;
-    if(name === 'email'){
-        setInputFields({
-            email:value,
-            password:inputFields.password
-        })
-    }else{
-        setInputFields({
-            email:inputFields.email,
-            password:value
-        })  
+    const name = event.target.name;
+    const value = event.target.value;
+    if (name === "email") {
+      setInputFields({
+        email: value,
+        password: inputFields.password,
+      });
+    } else {
+      setInputFields({
+        email: inputFields.email,
+        password: value,
+      });
     }
   };
 
@@ -45,7 +58,7 @@ const SignIn = () => {
           type="email"
           name="email"
           value={inputFields.email}
-          handleChange={(event)=>handleChange(event)}
+          handleChange={(event) => handleChange(event)}
           label="email"
           required
         />
@@ -53,16 +66,18 @@ const SignIn = () => {
           type="password"
           name="password"
           value={inputFields.password}
-          handleChange={(event)=>handleChange(event)}
+          handleChange={(event) => handleChange(event)}
           label="password"
           required
         />
         <div className="buttons">
-        <CustomButton type="submit" value="submit form">Sign In</CustomButton>
+          <CustomButton type="submit" value="submit form">
+            Sign In
+          </CustomButton>
         </div>
       </form>
     </div>
   );
 };
 
-export default SignIn;
+export default withRouter(SignIn);

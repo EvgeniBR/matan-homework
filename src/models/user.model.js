@@ -45,13 +45,13 @@ const userSchema = new mongoose.Schema({
     },
     country: {
         type: String,
-        required: true,
         trim: true,
+        default: 'israel',
     },
     city: {
         type: String,
-        required: true,
         trim: true,
+        default:'tel-aviv',
     },
     postal: {
         type: Number,
