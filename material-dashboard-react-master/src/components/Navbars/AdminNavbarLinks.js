@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -26,6 +26,7 @@ import axios from "axios";
 const useStyles = makeStyles(styles);
 
 function AdminNavbarLinks({ currentUser, history }) {
+  const [render , setRender] = useState(true)
   const classes = useStyles();
   const [openNotification, setOpenNotification] = React.useState(null);
   const [openProfile, setOpenProfile] = React.useState(null);
@@ -51,20 +52,22 @@ function AdminNavbarLinks({ currentUser, history }) {
   };
 
   const cookies = new Cookies();
-  const token = cookies.get("matanHomeWork");
+  let token = (cookies.get("matanHomeWork"));
   console.log(token);
   const handleLogOutProfile = async () => {
     try {
-      await axios.post("http://localhost:8000/api/users/logout", {
+      await axios.post("http://localhost:8000/api/users/logout",{}, {
         headers: {
           Authorization: "Bearer " + token,
           "Content-Type": "multipart/form-data",
         },
       });
-      cookies.remove("matanHomeWork");
+      token = (cookies.remove("matanHomeWork", {path:'/'}));
       history.push("/admin/signin");
     } catch (e) {
-      console.log(e);
+      token = (cookies.remove("matanHomeWork", {path:'/'}));
+      setRender(!render)
+      history.push("/admin/signin");
     }
   };
   return (

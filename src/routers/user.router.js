@@ -28,16 +28,15 @@ router.post("/api/users/login", async (req, res) => {
 });
 
 router.post("/api/users/logout", auth, async (req, res) => {
-  console.log(req.user);
   try {
-    console.log(req.user);
+    console.log('try',req.user);
     req.user.tokens = req.user.tokens.filter((token)=>{
       return token.token !== req.token
     })
     await req.user.save()
     req.status(200).send()
   } catch (e) {
-    console.log(req.user);
+    console.log('catch',req.user);
     res.status(400).send(e);
   }
 });
