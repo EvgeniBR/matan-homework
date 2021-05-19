@@ -26,6 +26,7 @@ import RTL from "layouts/RTL.js";
 
 import "assets/css/material-dashboard-react.css?v=1.8.0";
 import SignInSignUp from "components/SignInSignUp/SignInSignUp.component";
+import Dashboard from "views/Dashboard/Dashboard";
 
 const hist = createBrowserHistory();
 console.log(hist);
@@ -34,14 +35,16 @@ ReactDOM.render(
     <Switch>
       <Route path="/admin" component={Admin} />
       <Route path="/rtl" component={RTL} />
-       <Redirect from="/" to="/admin/dashboard" /> 
+      <Route path="/rtl" component={Admin} />
+      
+       {/* { <Redirect from="/" to="/admin/dashboard" />  } */}
       <Route
         exact
         path="/user/signin"
         component={SignInSignUp}
-        // render={() =>
-        //   this.props.currentUser ? <Redirect to="/" /> : <SignInSignUp />
-        // }
+        render={() =>
+          this.props.currentUser ? <Redirect to="/admin/dashboard" /> : <SignInSignUp />
+        }
       />
     </Switch>
   </Router>,
