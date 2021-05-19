@@ -19,10 +19,12 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { createBrowserHistory } from "history";
 import { Router, Route, Switch, Redirect } from "react-router-dom";
-
+import { Provider } from "react-redux";
+import { store, persistor } from "./redux/store";
 // core components
 import Admin from "layouts/Admin.js";
 import RTL from "layouts/RTL.js";
+import { PersistGate } from "redux-persist/integration/react";
 
 import "assets/css/material-dashboard-react.css?v=1.8.0";
 import SignInSignUp from "components/SignInSignUp/SignInSignUp.component";
@@ -31,7 +33,9 @@ import Dashboard from "views/Dashboard/Dashboard";
 const hist = createBrowserHistory();
 console.log(hist);
 ReactDOM.render(
+  <Provider store={store}>
   <Router history={hist}>
+  <PersistGate persistor={persistor}>
     <Switch>
       <Route path="/admin" component={Admin} />
       <Route path="/rtl" component={RTL} />
@@ -47,6 +51,8 @@ ReactDOM.render(
         }
       />
     </Switch>
-  </Router>,
+    </PersistGate>
+  </Router>
+   </Provider>,
   document.getElementById("root")
 );

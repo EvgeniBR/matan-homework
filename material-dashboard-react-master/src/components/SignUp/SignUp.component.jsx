@@ -2,11 +2,14 @@ import axios from "axios";
 import React, { useState } from "react";
 import CustomButton from "../CustomButton/CustomButton.component";
 import FormInput from "../FormInput/FormInput.component";
-import Cookies from 'universal-cookie';
+import Cookies from "universal-cookie";
 import { withRouter } from "react-router";
+import { selectCurrentUser } from "redux/user/user.selectors";
+import { createStructuredSelector } from "reselect";
+import { connect } from "react-redux";
+import setCurrentUser from "../../redux/user/user.actions";
 
-
-const SignUp = ({history}) => {
+const SignUp = (props) => {
   const [currentState, setCurrentState] = useState({
     usernName: "",
     firstName: "",
@@ -18,9 +21,9 @@ const SignUp = ({history}) => {
 
   const cookies = new Cookies();
   const coociesAccess = {
-    path : '/',
-    sameSite: 'strict',
-};
+    path: "/",
+    sameSite: "strict",
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -40,8 +43,11 @@ const SignUp = ({history}) => {
     try {
       const user = await axios
         .post("http://localhost:8000/api/users", currentState)
-        .then((res) => cookies.set('matanHomeWork', res.data.token , coociesAccess))
-        
+        .then((res) => {
+          props.setCurrentUser(res.data.user)
+          cookies.set("matanHomeWork", res.data.token, coociesAccess);
+        });
+
       setCurrentState({
         usernName: "",
         firstName: "",
@@ -51,7 +57,7 @@ const SignUp = ({history}) => {
         confirmPassword: "",
       });
 
-      history.push('/admin/dashboard');
+      props.history.push("/admin/dashboard");
     } catch (e) {
       console.log("error in handle submit of sign up", e);
     }
@@ -131,5 +137,16 @@ const SignUp = ({history}) => {
     </div>
   );
 };
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
+});
 
-export default withRouter(SignUp);
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+});
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(SignUp)
+);

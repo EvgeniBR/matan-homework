@@ -24,6 +24,8 @@
     "react-swipeable-views": "0.13.3",
     "redux": "^4.1.0",
     "redux-logger": "^3.0.6",
+    "redux-persist": "^6.0.0",
+    "reselect": "^4.0.0",
     "universal-cookie": "^4.0.4"
   },
   "scripts": {
