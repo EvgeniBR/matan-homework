@@ -44,7 +44,7 @@ ReactDOM.render(
        {/* { <Redirect from="/" to="/admin/dashboard" />  } */}
       <Route
         exact
-        path="/user/signin"
+        path="/"
         component={SignInSignUp}
         render={() =>
           this.props.currentUser ? <Redirect to="/admin/dashboard" /> : <SignInSignUp />
