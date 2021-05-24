@@ -17,7 +17,7 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static("material-dashboard-react-master/build"));
   // Express serve up index.html file if it doesn't recognize route
   const path = require("path");
-  app.get("*", (req, res) => {
+  app.get("/", (req, res) => {
     res.sendFile(path.resolve(__dirname, "material-dashboard-react-master", "build", "index.html"));
   });
 }
