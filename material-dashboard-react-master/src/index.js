@@ -28,10 +28,10 @@ import { PersistGate } from "redux-persist/integration/react";
 
 import "assets/css/material-dashboard-react.css?v=1.8.0";
 import SignInSignUp from "components/SignInSignUp/SignInSignUp.component";
-import Dashboard from "views/Dashboard/Dashboard";
+
 
 const hist = createBrowserHistory();
-console.log(hist);
+
 ReactDOM.render(
   <Provider store={store}>
   <Router history={hist}>
