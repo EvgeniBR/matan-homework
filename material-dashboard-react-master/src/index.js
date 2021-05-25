@@ -41,7 +41,7 @@ ReactDOM.render(
       <Route path="/rtl" component={RTL} />
       <Route path="/rtl" component={Admin} />
       
-       {/* { <Redirect from="/" to="/admin/dashboard" />  } */}
+      
       <Route
         exact
         path="/"
