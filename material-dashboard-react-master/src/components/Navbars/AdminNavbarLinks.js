@@ -56,7 +56,7 @@ function AdminNavbarLinks({ currentUser, history }) {
   console.log(token);
   const handleLogOutProfile = async () => {
     try {
-      await axios.post("http://localhost:8000/api/users/logout",{}, {
+      await axios.post("https://matan-homework.herokuapp.com/api/users/logout",{}, {
         headers: {
           Authorization: "Bearer " + token,
           "Content-Type": "multipart/form-data",

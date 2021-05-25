@@ -8,6 +8,7 @@ import { selectCurrentUser } from "redux/user/user.selectors";
 import { createStructuredSelector } from "reselect";
 import { connect } from "react-redux";
 import setCurrentUser from "../../redux/user/user.actions";
+import http from '../api/connect'
 
 const SignUp = (props) => {
   const [currentState, setCurrentState] = useState({
@@ -18,7 +19,7 @@ const SignUp = (props) => {
     password: "",
     confirmPassword: "",
   });
-
+ 
   const cookies = new Cookies();
   const coociesAccess = {
     path: "/",
@@ -41,8 +42,9 @@ const SignUp = (props) => {
       return;
     }
     try {
+      console.log(`https://matan-homework.herokuapp.com//api/users`)
       const user = await axios
-        .post("http://localhost:8000/api/users", currentState)
+        .post(`https://matan-homework.herokuapp.com/api/users`, currentState)
         .then((res) => {
           props.setCurrentUser(res.data.user)
           cookies.set("matanHomeWork", res.data.token, coociesAccess);

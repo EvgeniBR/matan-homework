@@ -4,6 +4,7 @@ import FormInput from "../FormInput/FormInput.component";
 import Cookies from "universal-cookie";
 import { withRouter } from "react-router";
 import axios from "axios";
+import http from '../api/connect'
 
 import "./SignIn.styles.scss";
 
@@ -15,13 +16,13 @@ const SignIn = ({ history }) => {
     path: "/",
     sameSite: "strict",
   };
-
+ 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const { email, password } = inputFields;
     try {
       const user = await axios
-        .post("http://localhost:8000/api/users/login", inputFields)
+        .post(`https://matan-homework.herokuapp.com//api/users/login`, inputFields)
         .then((res) =>
           cookies.set("matanHomeWork", res.data.token, coociesAccess)
         );
