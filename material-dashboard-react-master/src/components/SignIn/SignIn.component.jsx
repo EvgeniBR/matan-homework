@@ -22,7 +22,7 @@ const SignIn = ({ history }) => {
     const { email, password } = inputFields;
     try {
       const user = await axios
-        .post(`https://matan-homework.herokuapp.com//api/users/login`, inputFields)
+        .post(`http://matan-homework.herokuapp.com/api/users/login`, inputFields)
         .then((res) =>
           cookies.set("matanHomeWork", res.data.token, coociesAccess)
         );

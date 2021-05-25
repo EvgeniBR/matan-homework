@@ -6,9 +6,20 @@ const router = new express.Router();
 router.post("/api/users", async (req, res) => {
   const user = new User(req.body);
   try {
+    console.log(user)
     await user.save();
     const token = await user.generateToken();
     res.status(201).send({ user, token });
+  } catch (e) {
+    console.log(user)
+    res.status(400).send(e);
+  }
+});
+router.post("/api/users/hello", async (req, res) => {
+  
+  try {
+    console.log('hello')
+    res.status(200).send('hello!!!!');
   } catch (e) {
     res.status(400).send(e);
   }

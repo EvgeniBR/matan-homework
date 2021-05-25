@@ -42,7 +42,6 @@ const SignUp = (props) => {
       return;
     }
     try {
-      console.log(`https://matan-homework.herokuapp.com//api/users`)
       const user = await axios
         .post(`https://matan-homework.herokuapp.com/api/users`, currentState)
         .then((res) => {
