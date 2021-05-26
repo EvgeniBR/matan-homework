@@ -40,6 +40,7 @@ ReactDOM.render(
       <Route path="/admin" component={Admin} />
       <Route path="/rtl" component={RTL} />
       <Route path="/rtl" component={Admin} />
+      <Route path="/user/signin" component={SignInSignUp} />
       
       
       <Route
