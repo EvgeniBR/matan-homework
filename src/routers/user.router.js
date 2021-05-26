@@ -16,7 +16,6 @@ router.post("/api/users", async (req, res) => {
   }
 });
 router.post("/api/users/hello", async (req, res) => {
-  
   try {
     console.log('hello')
     res.status(200).send('hello!!!!');
